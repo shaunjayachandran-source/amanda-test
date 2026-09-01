@@ -137,6 +137,92 @@ img { max-width: 100%; display: block; }
 }
 
 /* ==========================================================================
+   Blob shapes — organic, slow-drifting accents, hero only
+   ========================================================================== */
+
+.blob-field {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.blob {
+  position: absolute;
+  display: block;
+  filter: blur(1px);
+  animation: blob-morph 16s ease-in-out infinite, blob-drift 24s ease-in-out infinite;
+}
+
+.blob--a {
+  width: 26rem;
+  height: 26rem;
+  top: -7rem;
+  right: -9rem;
+  background: var(--aurora);
+  opacity: 0.16;
+  border-radius: 62% 38% 55% 45% / 48% 42% 58% 52%;
+}
+
+.blob--b {
+  width: 18rem;
+  height: 18rem;
+  bottom: -4rem;
+  left: 6%;
+  background: linear-gradient(120deg, var(--violet), var(--teal));
+  opacity: 0.12;
+  border-radius: 42% 58% 65% 35% / 55% 45% 55% 45%;
+  animation-delay: -6s, -10s;
+}
+
+@keyframes blob-morph {
+  0%, 100% { border-radius: 62% 38% 55% 45% / 48% 42% 58% 52%; }
+  34% { border-radius: 45% 55% 40% 60% / 60% 35% 65% 40%; }
+  67% { border-radius: 55% 45% 60% 40% / 40% 60% 35% 65%; }
+}
+
+@keyframes blob-drift {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(-3%, 4%) rotate(8deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blob { animation: none; }
+}
+
+/* ==========================================================================
+   Section kickers — numbered labels, echo the hairline/timeline treatment
+   ========================================================================== */
+
+.section-kicker {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  margin-bottom: var(--space-1);
+  background: var(--aurora);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.section-kicker--void {
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  color: var(--teal);
+}
+
+/* ==========================================================================
+   Magnetic buttons — nudge toward the pointer on hover, desktop only
+   ========================================================================== */
+
+[data-magnetic] {
+  transition: transform 0.25s var(--ease);
+}
+
+/* ==========================================================================
    Header
    ========================================================================== */
 
@@ -226,6 +312,11 @@ img { max-width: 100%; display: block; }
   padding: var(--space-6) var(--space-3) var(--space-4);
   max-width: var(--max-width);
   margin: 0 auto;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
 }
 
 .eyebrow {
@@ -327,6 +418,7 @@ img { max-width: 100%; display: block; }
 
 .scroll-cue {
   position: absolute;
+  z-index: 1;
   bottom: var(--space-3);
   left: var(--space-3);
   width: 1px;
@@ -454,6 +546,7 @@ img { max-width: 100%; display: block; }
   background: var(--void);
   color: var(--paper);
   padding: var(--space-6) var(--space-3);
+  text-align: center;
 }
 
 .recognition blockquote {
