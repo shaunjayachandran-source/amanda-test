@@ -7,6 +7,7 @@
   var prefersReducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)"
   ).matches;
+  var isTouch = window.matchMedia("(hover: none)").matches;
 
   // ---- Header: solid background once the page has scrolled ----
   var header = document.querySelector("[data-header]");
@@ -43,7 +44,6 @@
   // ---- Ambient glow: follows the pointer within the hero, desktop only ----
   var glow = document.querySelector(".glow");
   var hero = document.querySelector(".hero");
-  var isTouch = window.matchMedia("(hover: none)").matches;
 
   if (glow && hero && !isTouch && !prefersReducedMotion) {
     hero.addEventListener("pointermove", function (event) {
@@ -52,6 +52,27 @@
       var y = ((event.clientY - rect.top) / rect.height) * 100;
       glow.style.setProperty("--glow-x", x + "%");
       glow.style.setProperty("--glow-y", y + "%");
+    });
+  }
+
+  // ---- Magnetic buttons: nudge toward the pointer, desktop only ----
+  var magneticEls = document.querySelectorAll("[data-magnetic]");
+  if (magneticEls.length && !isTouch && !prefersReducedMotion) {
+    var strength = 0.35;
+    var maxOffset = 10;
+
+    magneticEls.forEach(function (el) {
+      el.addEventListener("pointermove", function (event) {
+        var rect = el.getBoundingClientRect();
+        var relX = event.clientX - (rect.left + rect.width / 2);
+        var relY = event.clientY - (rect.top + rect.height / 2);
+        var x = Math.max(Math.min(relX * strength, maxOffset), -maxOffset);
+        var y = Math.max(Math.min(relY * strength, maxOffset), -maxOffset);
+        el.style.transform = "translate(" + x.toFixed(1) + "px, " + y.toFixed(1) + "px)";
+      });
+      el.addEventListener("pointerleave", function () {
+        el.style.transform = "translate(0, 0)";
+      });
     });
   }
 
